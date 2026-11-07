@@ -32,6 +32,26 @@ const updateTenantSchema = z.object({
     .nullable()
     .optional()
     .or(z.literal("").transform(() => null)),
+  card_bg_url: z
+    .string()
+    .url("URL latar kartu tidak valid")
+    .nullable()
+    .optional()
+    .or(z.literal("").transform(() => null)),
+  stamp_icon_url: z
+    .string()
+    .url("URL ikon stempel tidak valid")
+    .nullable()
+    .optional()
+    .or(z.literal("").transform(() => null)),
+  stamp_color: z
+    .string()
+    .trim()
+    .regex(/^#[0-9a-fA-F]{6}$/, "Format warna stempel harus hex 6 digit (contoh: #ffffff)")
+    .default("#ffffff"),
+  stamp_has_border: z
+    .boolean()
+    .default(true),
 });
 
 export type UpdateTenantInput = z.infer<typeof updateTenantSchema>;
@@ -111,6 +131,10 @@ export async function updateTenantAction(
       reward_text: validated.data.reward_text,
       stamps_required: validated.data.stamps_required,
       logo_url: validated.data.logo_url ?? null,
+      card_bg_url: validated.data.card_bg_url ?? null,
+      stamp_icon_url: validated.data.stamp_icon_url ?? null,
+      stamp_color: validated.data.stamp_color ?? "#ffffff",
+      stamp_has_border: validated.data.stamp_has_border ?? true,
     })
     .eq("id", tenantId);
 
@@ -204,6 +228,174 @@ export async function uploadLogoAction(
       }
     } else {
       return { success: false, error: `Gagal mengunggah logo: ${uploadError.message}` };
+    }
+  }
+
+  const { data: urlData } = supabase.storage.from("logos").getPublicUrl(filePath);
+  const publicUrl = `${urlData.publicUrl}?t=${Date.now()}`;
+
+  return { success: true, publicUrl };
+}
+
+export async function uploadCardBgAction(
+  formData: FormData
+): Promise<{ success: true; publicUrl: string } | { success: false; error: string }> {
+  const file = formData.get("card_bg") as File | null;
+  if (!file) {
+    return { success: false, error: "File gambar latar tidak ditemukan." };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return { success: false, error: "Sesi login telah berakhir. Silakan login kembali." };
+  }
+
+  const cookieStore = await cookies();
+  let tenantId = cookieStore.get("active_tenant")?.value;
+
+  if (!tenantId) {
+    const { data: member } = await supabase
+      .from("tenant_members")
+      .select("tenant_id")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+
+    if (!member?.tenant_id) {
+      return { success: false, error: "Tenant usaha tidak ditemukan." };
+    }
+    tenantId = member.tenant_id;
+  }
+
+  const { data: ownerMember } = await supabase
+    .from("tenant_members")
+    .select("role")
+    .eq("tenant_id", tenantId)
+    .eq("user_id", user.id)
+    .eq("role", "owner")
+    .maybeSingle();
+
+  if (!ownerMember) {
+    return { success: false, error: "Hanya pemilik (owner) yang dapat mengunggah latar kartu." };
+  }
+
+  const filePath = `${tenantId}/card_bg.png`;
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  const { error: uploadError } = await supabase.storage
+    .from("logos")
+    .upload(filePath, buffer, {
+      contentType: "image/png",
+      upsert: true,
+    });
+
+  if (uploadError) {
+    if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      const { createAdminClient } = await import("@/lib/supabase/server");
+      const adminClient = createAdminClient();
+      const { error: adminUploadError } = await adminClient.storage
+        .from("logos")
+        .upload(filePath, buffer, {
+          contentType: "image/png",
+          upsert: true,
+        });
+
+      if (adminUploadError) {
+        return { success: false, error: `Gagal mengunggah latar: ${adminUploadError.message}` };
+      }
+    } else {
+      return { success: false, error: `Gagal mengunggah latar: ${uploadError.message}` };
+    }
+  }
+
+  const { data: urlData } = supabase.storage.from("logos").getPublicUrl(filePath);
+  const publicUrl = `${urlData.publicUrl}?t=${Date.now()}`;
+
+  return { success: true, publicUrl };
+}
+
+export async function uploadStampIconAction(
+  formData: FormData
+): Promise<{ success: true; publicUrl: string } | { success: false; error: string }> {
+  const file = formData.get("stamp_icon") as File | null;
+  if (!file) {
+    return { success: false, error: "File ikon stempel tidak ditemukan." };
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+
+  if (authError || !user) {
+    return { success: false, error: "Sesi login telah berakhir. Silakan login kembali." };
+  }
+
+  const cookieStore = await cookies();
+  let tenantId = cookieStore.get("active_tenant")?.value;
+
+  if (!tenantId) {
+    const { data: member } = await supabase
+      .from("tenant_members")
+      .select("tenant_id")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+
+    if (!member?.tenant_id) {
+      return { success: false, error: "Tenant usaha tidak ditemukan." };
+    }
+    tenantId = member.tenant_id;
+  }
+
+  const { data: ownerMember } = await supabase
+    .from("tenant_members")
+    .select("role")
+    .eq("tenant_id", tenantId)
+    .eq("user_id", user.id)
+    .eq("role", "owner")
+    .maybeSingle();
+
+  if (!ownerMember) {
+    return { success: false, error: "Hanya pemilik (owner) yang dapat mengunggah ikon stempel." };
+  }
+
+  const filePath = `${tenantId}/stamp_icon.png`;
+  const arrayBuffer = await file.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  const { error: uploadError } = await supabase.storage
+    .from("logos")
+    .upload(filePath, buffer, {
+      contentType: "image/png",
+      upsert: true,
+    });
+
+  if (uploadError) {
+    if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      const { createAdminClient } = await import("@/lib/supabase/server");
+      const adminClient = createAdminClient();
+      const { error: adminUploadError } = await adminClient.storage
+        .from("logos")
+        .upload(filePath, buffer, {
+          contentType: "image/png",
+          upsert: true,
+        });
+
+      if (adminUploadError) {
+        return { success: false, error: `Gagal mengunggah ikon: ${adminUploadError.message}` };
+      }
+    } else {
+      return { success: false, error: `Gagal mengunggah ikon: ${uploadError.message}` };
     }
   }
 

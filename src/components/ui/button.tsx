@@ -14,22 +14,22 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantStyles = {
       default:
-        "bg-orange-600 text-white hover:bg-orange-700 focus-visible:ring-orange-500 shadow-sm",
+        "bg-blue-900 text-white hover:bg-blue-950 focus-visible:ring-blue-800",
       secondary:
-        "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 focus-visible:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-100",
+        "bg-slate-100 text-slate-900 hover:bg-slate-200 focus-visible:ring-slate-400 dark:bg-slate-800 dark:text-slate-100",
       outline:
-        "border border-zinc-300 bg-transparent hover:bg-zinc-100 text-zinc-900 focus-visible:ring-zinc-400 dark:border-zinc-700 dark:text-zinc-100 dark:hover:bg-zinc-800",
+        "border border-slate-300 bg-transparent hover:bg-slate-100 text-slate-900 focus-visible:ring-slate-400 dark:border-slate-700 dark:text-slate-100 dark:hover:bg-slate-800",
       ghost:
-        "hover:bg-zinc-100 text-zinc-900 hover:text-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800",
+        "hover:bg-slate-100 text-slate-900 hover:text-slate-900 dark:text-slate-100 dark:hover:bg-slate-800",
       destructive:
-        "bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500 shadow-sm",
+        "bg-red-700 text-white hover:bg-red-800 focus-visible:ring-red-600",
     };
 
     const sizeStyles = {
-      default: "h-10 px-4 py-2",
-      sm: "h-8 rounded-md px-3 text-xs",
-      lg: "h-12 rounded-md px-6 text-base",
-      icon: "h-10 w-10 p-0",
+      default: "h-11 px-4 py-2 sm:h-10",
+      sm: "h-11 px-3 text-xs sm:h-9",
+      lg: "h-12 px-6 text-base",
+      icon: "h-11 w-11 p-0 sm:h-10 sm:w-10",
     };
 
     return (

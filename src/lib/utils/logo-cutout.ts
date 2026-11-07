@@ -16,14 +16,23 @@ export interface ProcessLogoResult {
   previewUrl: string;
 }
 
-export async function processLogoFile(file: File): Promise<ProcessLogoResult> {
+export interface ProcessLogoOptions {
+  removeBackground?: boolean;
+  maxDimension?: number;
+}
+
+export async function processLogoFile(
+  file: File,
+  options: ProcessLogoOptions = {}
+): Promise<ProcessLogoResult> {
+  const { removeBackground = true, maxDimension = 160 } = options;
   if (!file.type.startsWith("image/")) {
     throw new Error("File harus berupa gambar (image/*).");
   }
 
-  const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
+  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4 MB
   if (file.size > MAX_FILE_SIZE) {
-    throw new Error("Ukuran gambar maksimal 2 MB.");
+    throw new Error("Ukuran gambar maksimal 4 MB.");
   }
 
   // Muat gambar ke HTMLImageElement
@@ -39,8 +48,8 @@ export async function processLogoFile(file: File): Promise<ProcessLogoResult> {
     reader.readAsDataURL(file);
   });
 
-  // Hitung dimensi resize (maks 160px pada sisi terpanjang)
-  const MAX_DIM = 160;
+  // Hitung dimensi resize (maks maxDimension px pada sisi terpanjang)
+  const MAX_DIM = maxDimension;
   let targetWidth = img.naturalWidth || img.width;
   let targetHeight = img.naturalHeight || img.height;
 
@@ -65,17 +74,19 @@ export async function processLogoFile(file: File): Promise<ProcessLogoResult> {
   }
 
   ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
-  const imageData = ctx.getImageData(0, 0, targetWidth, targetHeight);
-  const data = imageData.data;
-  const totalPixels = targetWidth * targetHeight;
 
-  // Indeks 4 sudut
-  const corners = [
-    0, // kiri-atas
-    (targetWidth - 1) * 4, // kanan-atas
-    (targetHeight - 1) * targetWidth * 4, // kiri-bawah
-    ((targetHeight - 1) * targetWidth + (targetWidth - 1)) * 4, // kanan-bawah
-  ];
+  if (removeBackground) {
+    const imageData = ctx.getImageData(0, 0, targetWidth, targetHeight);
+    const data = imageData.data;
+    const totalPixels = targetWidth * targetHeight;
+
+    // Indeks 4 sudut
+    const corners = [
+      0, // kiri-atas
+      (targetWidth - 1) * 4, // kanan-atas
+      (targetHeight - 1) * targetWidth * 4, // kiri-bawah
+      ((targetHeight - 1) * targetWidth + (targetWidth - 1)) * 4, // kanan-bawah
+    ];
 
   // Periksa apakah ada sudut yang sudah transparan (alpha < 128)
   const anyCornerTransparent = corners.some((idx) => data[idx + 3] < 128);
@@ -161,6 +172,7 @@ export async function processLogoFile(file: File): Promise<ProcessLogoResult> {
     // Tulis kembali data piksel yang sudah diubah ke canvas
     ctx.putImageData(imageData, 0, 0);
   }
+}
 
   // Buat Blob PNG transparan
   const blob = await new Promise<Blob>((resolve, reject) => {

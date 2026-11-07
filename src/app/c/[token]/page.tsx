@@ -1,10 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { connection } from "next/server";
-import { LoyaltyCard } from "@/components/loyalty-card";
 import type { Metadata } from "next";
-import { Award, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
+import { CustomerCardView } from "./customer-card-view";
 
-// Next.js 16 with cacheComponents is dynamic by default
 export const instant = false;
 
 interface PublicCardPageProps {
@@ -33,8 +32,9 @@ export async function generateMetadata({
     };
   }
 
+  // R-02: Tidak boleh ada em dash (—)
   return {
-    title: `${card.tenant_name} — Kartu Loyalitas`,
+    title: `${card.tenant_name}: Kartu Loyalitas Digital`,
     robots: {
       index: false,
       follow: false,
@@ -55,52 +55,31 @@ export default async function PublicCardPage({ params }: PublicCardPageProps) {
 
   if (error || !card) {
     return (
-      <main className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-sm rounded-2xl bg-zinc-900 border border-zinc-800 p-6 text-center shadow-xl">
-          <div className="w-12 h-12 rounded-full bg-red-950/60 border border-red-800/60 flex items-center justify-center mx-auto mb-4 text-red-400">
+      <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col items-center justify-center p-4">
+        <div className="w-full max-w-sm rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 text-center space-y-4">
+          <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-950/60 border border-red-200 dark:border-red-800/60 flex items-center justify-center mx-auto text-red-600 dark:text-red-400">
             <AlertCircle className="w-6 h-6" />
           </div>
-          <h1 className="text-lg font-bold text-white mb-2">
-            Kartu Tidak Ditemukan
-          </h1>
-          <p className="text-sm text-zinc-400 leading-relaxed">
-            Link kartu loyalitas tidak valid atau sudah tidak aktif. Pastikan kode QR dipindai dengan benar.
-          </p>
+          <div className="space-y-1.5">
+            <h1 className="text-lg font-bold text-slate-900 dark:text-white">
+              Kartu Tidak Ditemukan
+            </h1>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              Tautan kartu loyalitas ini tidak valid atau sudah dinonaktifkan. Pastikan kode QR dipindai dengan benar.
+            </p>
+          </div>
         </div>
       </main>
     );
   }
 
-  const redeemedCount = Number(card.rewards_redeemed) || 0;
-
   return (
-    <main className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center p-4 py-8">
-      <div className="w-full max-w-[420px] flex flex-col items-center gap-4">
-        {/* Kartu Loyalitas Read-Only */}
-        <LoyaltyCard
-          tenantName={card.tenant_name}
-          logoUrl={card.logo_url}
-          brandColor={card.brand_color}
-          customerName={card.customer_name}
-          stampsCount={card.stamps_count}
-          stampsRequired={card.stamps_required}
-          rewardText={card.reward_text}
-          status={card.status}
-        />
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col items-center justify-center p-4 py-8 relative">
+      <CustomerCardView card={card} />
 
-        {/* Info Hadiah yang Sudah Ditukar */}
-        {redeemedCount > 0 && (
-          <div className="w-full rounded-2xl bg-zinc-900/90 border border-zinc-800 p-3.5 flex items-center justify-center gap-2 text-sm text-amber-300/90">
-            <Award className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>Hadiah sudah ditukar: {redeemedCount} kali</span>
-          </div>
-        )}
-
-        <footer className="text-center text-xs text-zinc-500 pt-2 select-none">
-          Kartu Loyalitas Digital &bull; Ditampilkan oleh {card.tenant_name}
-        </footer>
-      </div>
+      <footer className="text-center text-xs text-slate-500 dark:text-slate-400 pt-6 select-none relative z-10">
+        Kartu Loyalitas Digital &bull; {card.tenant_name}
+      </footer>
     </main>
   );
 }
-

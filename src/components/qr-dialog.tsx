@@ -48,7 +48,7 @@ export function QRDialog({
       margin: 2,
       width: 320,
       color: {
-        dark: "#000000",
+        dark: "#18181b",
         light: "#ffffff",
       },
     })
@@ -115,18 +115,19 @@ export function QRDialog({
               justify-content: center;
               padding: 40px;
               text-align: center;
+              color: #1c1917;
             }
-            h1 { font-size: 24px; margin-bottom: 4px; color: #18181b; }
-            h2 { font-size: 18px; margin-top: 0; color: #52525b; font-weight: normal; }
-            img { width: 280px; height: 280px; margin: 20px 0; border: 1px solid #e4e4e7; border-radius: 12px; }
-            p { font-size: 13px; color: #71717a; max-width: 320px; line-height: 1.4; }
+            h1 { font-size: 22px; margin-bottom: 4px; font-weight: bold; }
+            h2 { font-size: 16px; margin-top: 0; color: #57534e; font-weight: normal; }
+            img { width: 260px; height: 260px; margin: 20px 0; border: 1px solid #e7e5e4; border-radius: 16px; padding: 12px; }
+            p { font-size: 12px; color: #78716c; max-width: 300px; line-height: 1.5; }
           </style>
         </head>
         <body>
           <h1>${safeTenantName}</h1>
           <h2>Pelanggan: ${safeCustomerName}</h2>
           <img src="${qrDataUrl}" alt="QR Code" />
-          <p>Scan QR code ini untuk melihat status stempel kartu loyalitas Anda.</p>
+          <p>Scan QR code ini dari kamera ponsel untuk membuka status kartu loyalitas digital Anda.</p>
           <script>
             window.onload = function() {
               window.print();
@@ -141,40 +142,40 @@ export function QRDialog({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-intro-in"
       role="dialog"
       aria-modal="true"
       aria-labelledby="qr-dialog-title"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-sm rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6 shadow-2xl flex flex-col items-center gap-4 text-center"
+        className="relative w-full max-w-sm rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-7 flex flex-col items-center gap-4 text-center"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           type="button"
           onClick={onClose}
-          aria-label="Tutup dialog"
-          className="absolute top-4 right-4 p-1.5 rounded-full text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition"
+          aria-label="Tutup dialog QR"
+          className="absolute top-3 right-3 inline-flex h-11 w-11 items-center justify-center rounded-full text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-100 dark:hover:bg-slate-800 transition"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Title */}
-        <div className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
-          <QrCode className="w-5 h-5 text-orange-600" />
-          <h3 id="qr-dialog-title" className="text-lg font-bold">
+        <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100">
+          <QrCode className="w-5 h-5 text-blue-900 dark:text-blue-400" />
+          <h3 id="qr-dialog-title" className="text-base sm:text-lg font-bold">
             QR Kartu Pelanggan
           </h3>
         </div>
 
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+        <p className="text-xs text-slate-600 dark:text-slate-400">
           Tunjukkan atau bagikan QR ke pelanggan untuk melihat kartu loyalitas.
         </p>
 
         {/* QR Display */}
-        <div className="p-3 bg-white rounded-xl shadow-inner border border-zinc-200 flex items-center justify-center min-w-[240px] min-h-[240px]">
+        <div className="p-3.5 bg-white rounded-2xl border border-slate-200 flex items-center justify-center min-w-[240px] min-h-[240px]">
           {error ? (
             <p className="text-xs text-red-500">{error}</p>
           ) : qrDataUrl ? (
@@ -182,35 +183,35 @@ export function QRDialog({
             <img
               src={qrDataUrl}
               alt={`QR Code untuk ${customerName}`}
-              className="w-56 h-56 object-contain"
+              className="w-52 h-52 object-contain"
             />
           ) : (
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-orange-500 border-t-transparent" />
+            <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-900 border-t-transparent" />
           )}
         </div>
 
-        <div className="text-center">
-          <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate max-w-[260px]">
+        <div className="text-center space-y-0.5">
+          <p className="text-sm font-bold text-slate-900 dark:text-slate-100 truncate max-w-[260px]">
             {customerName}
           </p>
-          <p className="text-[11px] text-zinc-400 font-mono truncate max-w-[260px]">
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 font-mono truncate max-w-[260px]">
             {publicUrl}
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="grid grid-cols-3 gap-2 w-full pt-2">
+        <div className="grid grid-cols-3 gap-2 w-full pt-1">
           <Button
             type="button"
             variant="outline"
             size="sm"
             onClick={handleCopyLink}
-            className="flex flex-col h-auto py-2 px-1 gap-1 text-[11px]"
+            className="flex flex-col h-auto py-2.5 px-1 gap-1 text-[11px] border-slate-200 dark:border-slate-800 font-semibold"
           >
             {copied ? (
               <Check className="w-4 h-4 text-emerald-600" />
             ) : (
-              <Copy className="w-4 h-4 text-zinc-600 dark:text-zinc-300" />
+              <Copy className="w-4 h-4 text-slate-600 dark:text-slate-300" />
             )}
             <span>{copied ? "Tersalin!" : "Salin Link"}</span>
           </Button>
@@ -225,9 +226,9 @@ export function QRDialog({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="flex flex-col h-auto py-2 px-1 gap-1 text-[11px] w-full"
+                className="flex flex-col h-auto py-2.5 px-1 gap-1 text-[11px] w-full border-slate-200 dark:border-slate-800 font-semibold"
               >
-                <Download className="w-4 h-4 text-zinc-600 dark:text-zinc-300" />
+                <Download className="w-4 h-4 text-slate-600 dark:text-slate-300" />
                 <span>Unduh PNG</span>
               </Button>
             </a>
@@ -237,7 +238,7 @@ export function QRDialog({
               variant="outline"
               size="sm"
               disabled
-              className="flex flex-col h-auto py-2 px-1 gap-1 text-[11px]"
+              className="flex flex-col h-auto py-2.5 px-1 gap-1 text-[11px]"
             >
               <Download className="w-4 h-4" />
               <span>Unduh PNG</span>
@@ -250,9 +251,9 @@ export function QRDialog({
             size="sm"
             onClick={handlePrint}
             disabled={!qrDataUrl}
-            className="flex flex-col h-auto py-2 px-1 gap-1 text-[11px]"
+            className="flex flex-col h-auto py-2.5 px-1 gap-1 text-[11px] border-slate-200 dark:border-slate-800 font-semibold"
           >
-            <Printer className="w-4 h-4 text-zinc-600 dark:text-zinc-300" />
+            <Printer className="w-4 h-4 text-slate-600 dark:text-slate-300" />
             <span>Cetak</span>
           </Button>
         </div>
@@ -260,4 +261,3 @@ export function QRDialog({
     </div>
   );
 }
-

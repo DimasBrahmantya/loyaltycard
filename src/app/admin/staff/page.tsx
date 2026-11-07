@@ -6,7 +6,7 @@ import { StaffManager, type StaffMemberItem } from "./staff-manager";
 import { AlertCircle } from "lucide-react";
 
 export const metadata = {
-  title: "Manajemen Staff — Admin",
+  title: "Manajemen Staff: Admin",
 };
 
 export const instant = false;
@@ -59,7 +59,7 @@ export default async function StaffPage() {
 
   if (membersError) {
     return (
-      <div className="p-4 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900 rounded-xl text-sm text-red-800 dark:text-red-300">
+      <div className="p-4 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900 rounded-xl text-xs text-red-800 dark:text-red-300">
         Gagal memuat daftar anggota: {membersError.message}
       </div>
     );
@@ -106,20 +106,20 @@ export default async function StaffPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+      <div className="pb-2 border-b border-slate-200 dark:border-slate-800">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
           Manajemen Staff & Anggota
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          Undang kasir atau staf baru dan atur akses anggota usaha Anda.
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
+          Undang kasir atau staf baru dan kelola hak akses operasional usaha Anda
         </p>
       </div>
 
       {serviceRoleWarning && (
-        <div className="p-4 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-900 rounded-xl text-sm text-amber-800 dark:text-amber-300 flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+        <div className="p-4 bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-900 rounded-xl text-xs text-amber-800 dark:text-amber-300 flex items-start gap-3">
+          <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
           <div>
-            <p className="font-semibold">Perhatian Konfigurasi Server</p>
+            <p className="font-semibold text-xs">Perhatian Konfigurasi Server</p>
             <p className="text-xs text-amber-700 dark:text-amber-400 mt-0.5">{serviceRoleWarning}</p>
           </div>
         </div>

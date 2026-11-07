@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { PlusCircle, CreditCard } from "lucide-react";
 import { CardsView, type CardItem } from "./cards-view";
 
+export const metadata = {
+  title: "Kartu Pelanggan: Admin",
+};
+
 export const instant = false;
 
 export default async function AdminCardsPage() {
@@ -59,20 +63,20 @@ export default async function AdminCardsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-            <CreditCard className="w-6 h-6 text-orange-600" />
-            Kartu Pelanggan
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <CreditCard className="w-5 h-5 text-blue-900 dark:text-blue-400" />
+            <span>Kartu Pelanggan</span>
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-            Kelola kartu loyalitas, stempel, dan penukaran hadiah pelanggan.
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
+            Kelola kartu loyalitas, pantau stempel, dan layani penukaran reward pelanggan.
           </p>
         </div>
 
         <Link href="/admin/cards/new">
-          <Button className="bg-orange-600 hover:bg-orange-700 text-white w-full sm:w-auto shadow-sm">
-            <PlusCircle className="w-4 h-4 mr-2" />
+          <Button className="bg-blue-900 hover:bg-blue-950 text-white font-semibold text-xs w-full sm:w-auto">
+            <PlusCircle className="w-4 h-4 mr-1.5" />
             Buat Kartu Baru
           </Button>
         </Link>
@@ -82,4 +86,3 @@ export default async function AdminCardsPage() {
     </div>
   );
 }
-

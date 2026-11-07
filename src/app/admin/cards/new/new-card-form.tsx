@@ -82,20 +82,20 @@ export function NewCardForm({ tenantName }: NewCardFormProps) {
       <div className="flex items-center gap-2">
         <Link
           href="/admin/cards"
-          className="inline-flex items-center text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition"
+          className="inline-flex items-center text-xs font-semibold text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition"
         >
           <ArrowLeft className="w-3.5 h-3.5 mr-1" />
-          Kembali ke Daftar Kartu
+          <span>Kembali ke Daftar Kartu</span>
         </Link>
       </div>
 
-      <div className="bg-white dark:bg-zinc-900 p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm space-y-6">
+      <div className="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-xl border border-slate-200 dark:border-slate-800 space-y-6">
         <div>
-          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-            <CreditCard className="w-5 h-5 text-orange-600" />
-            Buat Kartu Loyalitas Baru
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+            <CreditCard className="w-5 h-5 text-blue-900 dark:text-blue-400" />
+            <span>Buat Kartu Loyalitas Baru</span>
           </h2>
-          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
             Daftarkan pelanggan baru untuk langsung mendapatkan kartu loyalitas digital.
           </p>
         </div>
@@ -103,17 +103,17 @@ export function NewCardForm({ tenantName }: NewCardFormProps) {
         {errorMessage && (
           <div
             role="alert"
-            className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 text-xs font-medium"
+            className="p-3.5 rounded-lg bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 text-xs font-medium"
           >
             {errorMessage}
           </div>
         )}
 
         {createdCard && !showQR && (
-          <div className="p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900 text-emerald-800 dark:text-emerald-300 text-xs space-y-2">
+          <div className="p-4 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900 text-emerald-800 dark:text-emerald-300 text-xs space-y-2.5">
             <div className="flex items-center gap-2 font-semibold text-sm">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              Kartu untuk {createdCard.customerName} berhasil dibuat!
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Kartu untuk {createdCard.customerName} berhasil dibuat!</span>
             </div>
             <div className="flex gap-2 pt-1">
               <Button
@@ -121,7 +121,7 @@ export function NewCardForm({ tenantName }: NewCardFormProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => setShowQR(true)}
-                className="text-xs h-8 bg-white dark:bg-zinc-900"
+                className="text-xs h-11 sm:h-8 bg-white dark:bg-slate-900 border-emerald-300 dark:border-emerald-800"
               >
                 Tampilkan QR Lagi
               </Button>
@@ -129,7 +129,7 @@ export function NewCardForm({ tenantName }: NewCardFormProps) {
                 <Button
                   type="button"
                   size="sm"
-                  className="text-xs h-8 bg-emerald-600 hover:bg-emerald-700 text-white"
+                  className="text-xs h-11 sm:h-8 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold"
                 >
                   <ExternalLink className="w-3.5 h-3.5 mr-1" />
                   Buka Detail Kartu
@@ -141,11 +141,11 @@ export function NewCardForm({ tenantName }: NewCardFormProps) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="name" className="text-xs font-semibold">
+            <Label htmlFor="name" className="text-xs font-semibold text-slate-700 dark:text-slate-300">
               Nama Pelanggan <span className="text-red-500">*</span>
             </Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
                 id="name"
                 name="name"
@@ -155,18 +155,18 @@ export function NewCardForm({ tenantName }: NewCardFormProps) {
                 maxLength={80}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="pl-9"
+                className="pl-9 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
                 disabled={loading}
               />
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="phone" className="text-xs font-semibold">
+            <Label htmlFor="phone" className="text-xs font-semibold text-slate-700 dark:text-slate-300">
               Nomor Telepon / WhatsApp (Opsional)
             </Label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
                 id="phone"
                 name="phone"
@@ -175,20 +175,20 @@ export function NewCardForm({ tenantName }: NewCardFormProps) {
                 maxLength={20}
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="pl-9"
+                className="pl-9 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
                 disabled={loading}
               />
             </div>
-            <p className="text-[11px] text-zinc-400">
-              Digunakan untuk pencarian kartu pelanggan di kasir.
+            <p className="text-[11px] text-slate-600 dark:text-slate-400">
+              Mempermudah kasir mencari kartu pelanggan tanpa perlu scan ulang kartu fisik.
             </p>
           </div>
 
-          <div className="pt-2 flex flex-col sm:flex-row gap-3">
+          <div className="pt-3 flex flex-col sm:flex-row gap-3">
             <Button
               type="submit"
               disabled={loading}
-              className="bg-orange-600 hover:bg-orange-700 text-white flex-1"
+              className="bg-blue-900 hover:bg-blue-950 text-white font-semibold text-xs h-11 flex-1"
             >
               {loading ? (
                 <>
@@ -204,6 +204,7 @@ export function NewCardForm({ tenantName }: NewCardFormProps) {
               variant="outline"
               disabled={loading}
               onClick={() => router.push("/admin/cards")}
+              className="text-xs h-11 border-slate-200 dark:border-slate-800"
             >
               Batal
             </Button>
@@ -224,4 +225,3 @@ export function NewCardForm({ tenantName }: NewCardFormProps) {
     </div>
   );
 }
-

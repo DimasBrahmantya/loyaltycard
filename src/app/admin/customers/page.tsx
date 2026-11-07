@@ -5,7 +5,7 @@ import { connection } from "next/server";
 import { CustomersView, type CustomerItem } from "./customers-view";
 
 export const metadata = {
-  title: "Pelanggan — Admin",
+  title: "Data Pelanggan: Admin",
 };
 
 export const instant = false;
@@ -67,7 +67,7 @@ export default async function CustomersPage() {
 
   if (error) {
     return (
-      <div className="p-4 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900 rounded-xl text-sm text-red-800 dark:text-red-300">
+      <div className="p-4 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900 rounded-2xl text-xs text-red-800 dark:text-red-300">
         Gagal memuat daftar pelanggan: {error.message}
       </div>
     );
@@ -83,12 +83,12 @@ export default async function CustomersPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+      <div className="pb-2 border-b border-slate-200 dark:border-slate-800">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
           Data Pelanggan
         </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          Daftar seluruh pelanggan dan ringkasan status kartu loyalitas mereka.
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
+          Daftar seluruh pelanggan dan ringkasan status kartu loyalitas mereka
         </p>
       </div>
 
@@ -96,4 +96,3 @@ export default async function CustomersPage() {
     </div>
   );
 }
-

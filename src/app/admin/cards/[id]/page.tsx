@@ -42,7 +42,7 @@ export default async function CardDetailPage({ params }: CardDetailPageProps) {
       .maybeSingle(),
     supabase
       .from("tenants")
-      .select("id, name, logo_url, brand_color, reward_text")
+      .select("id, name, logo_url, brand_color, reward_text, card_bg_url, stamp_icon_url, stamp_color, stamp_has_border")
       .eq("id", card.tenant_id)
       .maybeSingle(),
   ]);

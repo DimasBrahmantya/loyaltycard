@@ -19,6 +19,10 @@ export type Database = {
           reward_text: string
           stamps_required: number
           created_at: string
+          card_bg_url: string | null
+          stamp_icon_url: string | null
+          stamp_color: string
+          stamp_has_border: boolean
         }
         Insert: {
           id?: string
@@ -29,6 +33,10 @@ export type Database = {
           reward_text?: string
           stamps_required?: number
           created_at?: string
+          card_bg_url?: string | null
+          stamp_icon_url?: string | null
+          stamp_color?: string
+          stamp_has_border?: boolean
         }
         Update: {
           id?: string
@@ -39,6 +47,10 @@ export type Database = {
           reward_text?: string
           stamps_required?: number
           created_at?: string
+          card_bg_url?: string | null
+          stamp_icon_url?: string | null
+          stamp_color?: string
+          stamp_has_border?: boolean
         }
         Relationships: []
       }
@@ -341,6 +353,10 @@ export type Database = {
           stamps_required: number
           status: string
           rewards_redeemed: number
+          card_bg_url: string | null
+          stamp_icon_url: string | null
+          stamp_color: string
+          stamp_has_border: boolean
         }[]
       }
     }
