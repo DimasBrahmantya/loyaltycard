@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { connection } from "next/server";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, CreditCard } from "lucide-react";
+import { PlusCircle, CreditCard, QrCode } from "lucide-react";
 import { CardsView, type CardItem } from "./cards-view";
 
 export const metadata = {
@@ -74,12 +74,20 @@ export default async function AdminCardsPage() {
           </p>
         </div>
 
-        <Link href="/admin/cards/new">
-          <Button className="bg-blue-900 hover:bg-blue-950 text-white font-semibold text-xs w-full sm:w-auto">
-            <PlusCircle className="w-4 h-4 mr-1.5" />
-            Buat Kartu Baru
-          </Button>
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link href="/admin/scan">
+            <Button variant="outline" className="border-slate-300 dark:border-slate-700 font-semibold text-xs w-full sm:w-auto">
+              <QrCode className="w-4 h-4 mr-1.5 text-blue-900 dark:text-blue-400" />
+              Scan QR Pelanggan
+            </Button>
+          </Link>
+          <Link href="/admin/cards/new">
+            <Button className="bg-blue-900 hover:bg-blue-950 text-white font-semibold text-xs w-full sm:w-auto">
+              <PlusCircle className="w-4 h-4 mr-1.5" />
+              Buat Kartu Baru
+            </Button>
+          </Link>
+        </div>
       </div>
 
       <CardsView initialCards={cards} />

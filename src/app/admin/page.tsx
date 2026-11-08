@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { CreditCard, Award, Stamp, PlusCircle, Users, History } from "lucide-react";
+import { CreditCard, Award, Stamp, PlusCircle, Users, History, QrCode } from "lucide-react";
 
 export const instant = false;
 
@@ -66,7 +66,13 @@ export default async function AdminDashboardPage() {
             Aktivitas kartu loyalitas dan stempel pelanggan secara langsung
           </p>
         </div>
-        <div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link href="/admin/scan">
+            <Button variant="outline" className="gap-2 border-slate-300 dark:border-slate-700 font-semibold text-xs">
+              <QrCode className="h-4 w-4 text-blue-900 dark:text-blue-400" />
+              <span>Scan QR Pelanggan</span>
+            </Button>
+          </Link>
           <Link href="/admin/cards/new">
             <Button className="gap-2 bg-blue-900 hover:bg-blue-950 text-white font-semibold text-xs">
               <PlusCircle className="h-4 w-4" />

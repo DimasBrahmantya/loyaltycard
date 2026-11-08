@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
+  QrCode,
   CreditCard,
   Users,
   History,
@@ -21,6 +22,7 @@ export function AdminNavTabs({ isOwner }: AdminNavTabsProps) {
 
   const navLinks = [
     { href: "/admin", label: "Ringkasan", icon: LayoutDashboard, exact: true },
+    { href: "/admin/scan", label: "Scan QR", icon: QrCode, exact: false },
     { href: "/admin/cards", label: "Kartu", icon: CreditCard, exact: false },
     { href: "/admin/customers", label: "Pelanggan", icon: Users, exact: false },
     { href: "/admin/history", label: "Riwayat", icon: History, exact: false },
