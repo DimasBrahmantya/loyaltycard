@@ -126,12 +126,24 @@ export function CustomersView({ initialCustomers }: CustomersViewProps) {
                         className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
                       >
                         <td className="py-3 px-3 font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap">
-                          <div className="flex items-center gap-2">
-                            <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 text-xs">
-                              <User className="w-3.5 h-3.5" />
+                          {card ? (
+                            <Link
+                              href={`/admin/cards/${card.id}`}
+                              className="group inline-flex items-center gap-2 hover:text-blue-900 dark:hover:text-blue-400 transition-colors"
+                            >
+                              <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/30 flex items-center justify-center text-slate-600 dark:text-slate-400 group-hover:text-blue-900 dark:group-hover:text-blue-400 text-xs transition-colors">
+                                <User className="w-3.5 h-3.5" />
+                              </div>
+                              <span className="group-hover:underline underline-offset-2">{customer.name}</span>
+                            </Link>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <div className="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 text-xs">
+                                <User className="w-3.5 h-3.5" />
+                              </div>
+                              <span>{customer.name}</span>
                             </div>
-                            <span>{customer.name}</span>
-                          </div>
+                          )}
                         </td>
                         <td className="py-3 px-3 text-xs text-slate-600 dark:text-slate-400 whitespace-nowrap">
                           {customer.phone ? (
