@@ -51,11 +51,16 @@ export default function OnboardingPage() {
           <div className="w-12 h-12 rounded-lg bg-blue-900/10 border border-blue-900/20 flex items-center justify-center text-blue-900 dark:text-blue-400 mx-auto">
             <Store className="w-6 h-6" />
           </div>
-          <CardTitle className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
-            Daftarkan Usaha Anda
-          </CardTitle>
+          <div className="space-y-1">
+            <span className="text-[11px] font-semibold text-blue-900 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900 px-2.5 py-0.5 rounded-full inline-block">
+              Langkah 2 dari 2: Profil & Tautan Usaha
+            </span>
+            <CardTitle className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+              Daftarkan Usaha Anda
+            </CardTitle>
+          </div>
           <CardDescription className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-            Langkah awal untuk memulai: tentukan nama usaha dan tautan unik untuk kartu loyalitas pelanggan.
+            Langkah akhir: tentukan nama usaha dan tautan unik untuk kartu loyalitas pelanggan.
           </CardDescription>
         </CardHeader>
         <form action={formAction}>

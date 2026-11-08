@@ -5,8 +5,8 @@ import { LoyaltyCard } from "@/components/loyalty-card";
 import { Plus, RotateCcw, CreditCard } from "lucide-react";
 
 export function HeroCardSimulator() {
-  const [stamps, setStamps] = useState(4);
-  const totalRequired = 8;
+  const [stamps, setStamps] = useState(5);
+  const totalRequired = 10;
 
   const handleAddStamp = () => {
     setStamps((prev) => (prev < totalRequired ? prev + 1 : prev));

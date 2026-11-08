@@ -27,10 +27,6 @@ export default function HomePage() {
     }
   }, []);
 
-  const handleReplayIntro = () => {
-    setShowIntro(true);
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0b1120] text-slate-900 dark:text-slate-100 selection:bg-blue-900/10 selection:text-blue-900 dark:selection:text-blue-300">
       {/* Opening Intro Modal/Screen (Otomatis masuk setelah beberapa detik) */}
@@ -246,14 +242,7 @@ export default function HomePage() {
             >
               Kebijakan Privasi
             </Link>
-            <button
-              type="button"
-              onClick={handleReplayIntro}
-              className="inline-flex min-h-11 items-center px-2 text-slate-600 hover:text-blue-900 dark:text-slate-400 dark:hover:text-blue-300 transition"
-            >
-              Putar Ulang Opening
-            </button>
-            <span>&bull;</span>
+            <span className="text-slate-400 dark:text-slate-600 select-none">&bull;</span>
             <p>&copy; 2026 LoyaltyCard. Hak cipta dilindungi.</p>
           </div>
         </div>

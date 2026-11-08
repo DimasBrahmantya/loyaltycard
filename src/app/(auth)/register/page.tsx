@@ -26,11 +26,16 @@ export default function RegisterPage() {
           <div className="w-12 h-12 rounded-lg bg-blue-900/10 border border-blue-900/20 flex items-center justify-center text-blue-900 dark:text-blue-400 mx-auto">
             <CreditCard className="w-6 h-6" />
           </div>
-          <CardTitle className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
-            Daftar Akun Usaha Baru
-          </CardTitle>
+          <div className="space-y-1">
+            <span className="text-[11px] font-semibold text-blue-900 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900 px-2.5 py-0.5 rounded-full inline-block">
+              Langkah 1 dari 2: Pendaftaran Akun
+            </span>
+            <CardTitle className="text-xl sm:text-2xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+              Daftar Akun Usaha Baru
+            </CardTitle>
+          </div>
           <CardDescription className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-            Buat akun untuk mulai menerbitkan kartu loyalitas digital bagi pelanggan usaha Anda.
+            Buat akun untuk memulai. Anda akan mengatur nama usaha dan reward pada langkah berikutnya.
           </CardDescription>
         </CardHeader>
         <form action={formAction}>
@@ -102,7 +107,7 @@ export default function RegisterPage() {
                   Mendaftarkan Akun...
                 </>
               ) : (
-                "Daftar & Buat Usaha"
+                "Daftar & Lanjut ke Profil Usaha"
               )}
             </Button>
             <p className="text-center text-xs text-slate-600 dark:text-slate-400">

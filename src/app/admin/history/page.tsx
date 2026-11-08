@@ -1,10 +1,10 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createAdminClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { History, Stamp, Undo2, Gift, ChevronLeft, ChevronRight, User } from "lucide-react";
+import { History, Stamp, Undo2, Gift, ChevronLeft, ChevronRight, User, UserCheck } from "lucide-react";
 
 export const metadata = {
   title: "Riwayat Aktivitas: Admin",
@@ -88,6 +88,43 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
         customerMap.set(c.id, customer.name);
       }
     });
+  }
+
+  // Batch query data actor / kasir
+  const actorIds = Array.from(
+    new Set((historyRows || []).map((r) => r.actor).filter((id): id is string => Boolean(id)))
+  );
+
+  const actorMap = new Map<string, string>();
+  if (actorIds.length > 0) {
+    const { data: membersData } = await supabase
+      .from("tenant_members")
+      .select("user_id, role")
+      .eq("tenant_id", tenantId)
+      .in("user_id", actorIds);
+
+    membersData?.forEach((m) => {
+      actorMap.set(m.user_id, m.role === "owner" ? "Owner" : "Kasir");
+    });
+
+    if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        const adminClient = createAdminClient();
+        const { data: usersData } = await adminClient.auth.admin.listUsers();
+        usersData?.users?.forEach((u) => {
+          if (actorIds.includes(u.id)) {
+            const role = actorMap.get(u.id);
+            const roleLabel = role ? ` (${role})` : "";
+            const emailPrefix = u.email ? u.email.split("@")[0] : null;
+            if (emailPrefix) {
+              actorMap.set(u.id, `${emailPrefix}${roleLabel}`);
+            }
+          }
+        });
+      } catch {
+        // fallback to role name
+      }
+    }
   }
 
   const formatDate = (isoString: string | null) => {
@@ -182,6 +219,7 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
                   <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 text-xs font-semibold">
                     <th className="pb-3 px-3">Aktivitas</th>
                     <th className="pb-3 px-3">Pelanggan</th>
+                    <th className="pb-3 px-3">Petugas / Kasir</th>
                     <th className="pb-3 px-3">Waktu</th>
                     <th className="pb-3 px-3">Catatan Nota</th>
                     <th className="pb-3 px-3 text-right">Kartu</th>
@@ -192,6 +230,8 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
                     const customerName = item.card_id
                       ? customerMap.get(item.card_id) || "Pelanggan"
                       : "-";
+
+                    const actorName = item.actor ? actorMap.get(item.actor) || "Kasir" : "-";
 
                     return (
                       <tr
@@ -206,6 +246,12 @@ export default async function HistoryPage({ searchParams }: HistoryPageProps) {
                             <User className="w-3.5 h-3.5 text-slate-400" />
                             <span>{customerName}</span>
                           </div>
+                        </td>
+                        <td className="py-3 px-3 text-xs whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-medium">
+                            <UserCheck className="w-3 h-3 text-slate-400" />
+                            <span>{actorName}</span>
+                          </span>
                         </td>
                         <td className="py-3 px-3 text-xs text-slate-500 whitespace-nowrap">
                           {formatDate(item.at)}
