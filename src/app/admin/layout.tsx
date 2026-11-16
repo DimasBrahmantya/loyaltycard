@@ -56,64 +56,103 @@ export default async function AdminLayout({
   const isOwner = member.role === "owner";
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-[#0b1120] text-slate-900 dark:text-slate-100 transition-colors">
-      {/* Top Navbar */}
-      <header className="sticky top-0 z-40 w-full border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-[#0f172a]">
-        <div className="max-w-6xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-3">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-slate-50 dark:bg-[#0b1120] text-slate-900 dark:text-slate-100 transition-colors">
+      {/* Desktop Left Sidebar */}
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:shrink-0 lg:sticky lg:top-0 lg:h-screen border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0f172a] p-4 justify-between">
+        <div className="space-y-6">
+          {/* Store Switcher / Header Card */}
+          <Link
+            href="/admin"
+            className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shrink-0 overflow-hidden shadow-sm">
+              {tenant?.logo_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={tenant.logo_url}
+                  alt={tenantName}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <Store className="h-5 w-5" />
+              )}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="font-bold text-sm truncate text-slate-900 dark:text-slate-100">
+                {tenantName}
+              </p>
+              <p className="text-[11px] font-semibold text-blue-600 dark:text-blue-400">
+                {isOwner ? "Owner" : "Staf"} &bull; Aktif
+              </p>
+            </div>
+          </Link>
+
+          {/* All Sidebar Menu Items */}
+          <AdminNavTabs isOwner={isOwner} />
+        </div>
+
+        {/* User & Logout Footer */}
+        <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-2">
+          <p className="px-2 text-[11px] text-slate-500 dark:text-slate-400 font-medium truncate">
+            {user.email}
+          </p>
+          <form action={logoutAction}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start gap-2 text-xs font-semibold text-slate-600 hover:text-red-600 hover:bg-red-50 dark:text-slate-400 dark:hover:text-red-400 dark:hover:bg-red-950/40 rounded-xl"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Keluar</span>
+            </Button>
+          </form>
+        </div>
+      </aside>
+
+      {/* Mobile Top Navbar */}
+      <header className="lg:hidden sticky top-0 z-40 w-full border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-[#0f172a]">
+        <div className="flex h-14 items-center justify-between px-4">
+          <div className="flex items-center gap-2.5 min-w-0">
             <Link
               href="/admin"
-              className="flex items-center gap-2.5 font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 group"
+              className="flex items-center gap-2 font-bold text-sm text-slate-900 dark:text-slate-100 min-w-0"
             >
-              <div className="w-8 h-8 rounded-lg bg-blue-900/10 border border-blue-900/20 flex items-center justify-center text-blue-900 dark:text-blue-400 group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shrink-0 overflow-hidden">
                 {tenant?.logo_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={tenant.logo_url}
                     alt={tenantName}
-                    className="w-full h-full object-cover rounded-lg"
+                    className="w-full h-full object-cover"
                   />
                 ) : (
                   <Store className="h-4 w-4" />
                 )}
               </div>
-              <span className="truncate max-w-[150px] sm:max-w-xs">{tenantName}</span>
+              <span className="truncate">{tenantName}</span>
             </Link>
-
-            <span
-              className={`text-[11px] px-2.5 py-0.5 rounded-full font-semibold border ${
-                isOwner
-                  ? "bg-blue-900/10 text-blue-900 border-blue-900/20 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800"
-                  : "bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700"
-              }`}
-            >
+            <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800 shrink-0">
               {isOwner ? "Owner" : "Staf"}
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="hidden md:inline text-xs text-slate-500 dark:text-slate-400 font-medium">
-              {user.email}
-            </span>
-            <form action={logoutAction}>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-1.5 text-xs text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
-              >
-                <LogOut className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Keluar</span>
-              </Button>
-            </form>
-          </div>
+          <form action={logoutAction}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-1.5 text-xs text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+            >
+              <LogOut className="h-3.5 w-3.5" />
+              <span>Keluar</span>
+            </Button>
+          </form>
         </div>
 
-        {/* Client Navigation Tabs with Active Highlighting */}
         <AdminNavTabs isOwner={isOwner} />
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 md:p-8 animate-intro-in">
+      <main className="flex-1 min-w-0 max-w-6xl w-full mx-auto p-4 sm:p-6 md:p-8 animate-intro-in">
         {children}
       </main>
     </div>

@@ -57,24 +57,24 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-6">
       {/* Header bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-slate-200 dark:border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-3 border-b border-slate-200 dark:border-slate-800">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
             Ringkasan Usaha
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
-            Aktivitas kartu loyalitas dan stempel pelanggan secara langsung
+            Pantau aktivitas stempel dan penukaran hadiah pelanggan secara langsung
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2.5">
           <Link href="/admin/scan">
-            <Button variant="outline" className="gap-2 border-slate-300 dark:border-slate-700 font-semibold text-xs">
-              <QrCode className="h-4 w-4 text-blue-900 dark:text-blue-400" />
+            <Button variant="outline" className="gap-2 rounded-xl border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 font-semibold text-xs h-10">
+              <QrCode className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               <span>Scan QR Pelanggan</span>
             </Button>
           </Link>
           <Link href="/admin/cards/new">
-            <Button className="gap-2 bg-blue-900 hover:bg-blue-950 text-white font-semibold text-xs">
+            <Button className="gap-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs h-10 shadow-sm shadow-blue-600/20">
               <PlusCircle className="h-4 w-4" />
               <span>Buat Kartu Baru</span>
             </Button>
@@ -82,19 +82,35 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
+      {/* Actionable Ready-to-Redeem Alert Banner */}
+      {readyCards > 0 && (
+        <div className="rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 px-5 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5 text-xs sm:text-sm font-semibold text-emerald-800 dark:text-emerald-200">
+            <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span>{readyCards} pelanggan memiliki stempel penuh &amp; siap menukarkan hadiah hari ini!</span>
+          </div>
+          <Link
+            href="/admin/cards"
+            className="text-xs font-bold text-emerald-700 dark:text-emerald-300 hover:underline shrink-0"
+          >
+            Lihat Daftar &rarr;
+          </Link>
+        </div>
+      )}
+
       {/* Metric Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <Card className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 transition">
+        <Card className="rounded-2xl border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 transition">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xs font-semibold text-slate-600 dark:text-slate-400">
               Total Kartu
             </CardTitle>
-            <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400">
+            <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400">
               <CreditCard className="h-4 w-4" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-50">
+            <div className="text-3xl font-extrabold text-slate-900 dark:text-slate-50">
               {totalCards}
             </div>
             <CardDescription className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -103,17 +119,17 @@ export default async function AdminDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 transition">
+        <Card className="rounded-2xl border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 transition">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xs font-semibold text-slate-600 dark:text-slate-400">
               Stempel Hari Ini
             </CardTitle>
-            <div className="w-8 h-8 rounded-lg bg-blue-900/10 flex items-center justify-center text-blue-900 dark:text-blue-400">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 flex items-center justify-center text-blue-600 dark:text-blue-400">
               <Stamp className="h-4 w-4" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-50">
+            <div className="text-3xl font-extrabold text-blue-600 dark:text-blue-400">
               {stampsToday}
             </div>
             <CardDescription className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -122,26 +138,26 @@ export default async function AdminDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className={`border transition ${
+        <Card className={`rounded-2xl border transition ${
           readyCards > 0
-            ? "border-blue-900/30 dark:border-blue-700/40 bg-blue-900/[0.03]"
+            ? "border-blue-200 dark:border-blue-800/60 bg-white dark:bg-slate-900"
             : "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900"
         }`}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xs font-semibold text-slate-600 dark:text-slate-400">
               Kartu Siap Tukar Hadiah
             </CardTitle>
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${
               readyCards > 0
-                ? "bg-blue-900/10 text-blue-900 dark:bg-blue-950 dark:text-blue-300"
+                ? "bg-orange-50 text-orange-600 dark:bg-orange-950/50 dark:text-orange-400"
                 : "bg-slate-100 dark:bg-slate-800 text-slate-400"
             }`}>
               <Award className="h-4 w-4" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl sm:text-3xl font-extrabold ${
-              readyCards > 0 ? "text-blue-900 dark:text-blue-300" : "text-slate-900 dark:text-slate-50"
+            <div className={`text-3xl font-extrabold ${
+              readyCards > 0 ? "text-orange-600 dark:text-orange-400" : "text-slate-900 dark:text-slate-50"
             }`}>
               {readyCards}
             </div>
@@ -155,22 +171,24 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Quick Actions Panel */}
-      <Card className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+      <Card className="rounded-2xl border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
         <CardHeader>
           <CardTitle className="text-base font-bold text-slate-900 dark:text-slate-100">
             Akses Menu Cepat
           </CardTitle>
-          <CardDescription className="text-xs text-slate-500">
+          <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
             Pintasan cepat untuk kelola kartu pelanggan, data pembeli, atau riwayat audit kasir
           </CardDescription>
         </CardHeader>
         <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Link
             href="/admin/cards"
-            className="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition flex items-center justify-between"
+            className="group p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50/40 dark:hover:bg-blue-950/20 transition flex items-center justify-between"
           >
-            <div className="flex items-center gap-2.5">
-              <CreditCard className="w-4 h-4 text-blue-900 dark:text-blue-400" />
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                <CreditCard className="w-4 h-4" />
+              </div>
               <div className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                 Kelola Kartu
               </div>
@@ -179,10 +197,12 @@ export default async function AdminDashboardPage() {
 
           <Link
             href="/admin/customers"
-            className="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition flex items-center justify-between"
+            className="group p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50/40 dark:hover:bg-blue-950/20 transition flex items-center justify-between"
           >
-            <div className="flex items-center gap-2.5">
-              <Users className="w-4 h-4 text-blue-900 dark:text-blue-400" />
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                <Users className="w-4 h-4" />
+              </div>
               <div className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                 Data Pelanggan
               </div>
@@ -191,10 +211,12 @@ export default async function AdminDashboardPage() {
 
           <Link
             href="/admin/history"
-            className="group p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition flex items-center justify-between"
+            className="group p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50/40 dark:hover:bg-blue-950/20 transition flex items-center justify-between"
           >
-            <div className="flex items-center gap-2.5">
-              <History className="w-4 h-4 text-blue-900 dark:text-blue-400" />
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950/60 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                <History className="w-4 h-4" />
+              </div>
               <div className="text-xs font-semibold text-slate-800 dark:text-slate-200">
                 Riwayat Transaksi
               </div>

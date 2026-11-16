@@ -37,7 +37,7 @@ export function AdminNavTabs({ isOwner }: AdminNavTabsProps) {
   return (
     <nav
       aria-label="Navigasi Menu Admin"
-      className="max-w-6xl mx-auto flex items-center space-x-1 px-4 sm:px-6 overflow-x-auto border-t border-slate-200 dark:border-slate-800 py-1.5 scrollbar-none"
+      className="flex lg:flex-col items-center lg:items-stretch gap-1 overflow-x-auto lg:overflow-visible px-4 sm:px-6 lg:px-0 py-2 lg:py-0 border-t lg:border-t-0 border-slate-200 dark:border-slate-800 scrollbar-none"
     >
       {navLinks.map((item) => {
         const Icon = item.icon;
@@ -50,13 +50,13 @@ export function AdminNavTabs({ isOwner }: AdminNavTabsProps) {
             key={item.href}
             href={item.href}
             aria-current={isActive ? "page" : undefined}
-            className={`flex items-center gap-2 px-3 min-h-11 sm:min-h-9 text-xs font-semibold rounded-lg transition-all whitespace-nowrap ${
+            className={`flex items-center gap-2.5 px-3.5 min-h-10 text-xs font-semibold rounded-xl transition-all whitespace-nowrap ${
               isActive
-                ? "bg-blue-900/10 text-blue-950 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-900/20"
+                ? "bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800/70"
                 : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/60 border border-transparent"
             }`}
           >
-            <Icon className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-blue-900 dark:text-blue-400" : "text-slate-400"}`} />
+            <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400"}`} />
             <span>{item.label}</span>
           </Link>
         );

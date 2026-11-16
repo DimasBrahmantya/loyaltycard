@@ -68,6 +68,24 @@ export function CustomerCardView({ card }: CustomerCardViewProps) {
 
   return (
     <div className="w-full max-w-[420px] flex flex-col items-center gap-4 animate-intro-in">
+      {/* Top Wallet Header */}
+      <div className="w-full flex items-center justify-between px-1">
+        <span className="text-sm font-bold tracking-tight text-slate-900 dark:text-slate-100">
+          Dompet Loyalitas
+        </span>
+        <span
+          className={`text-[11px] font-semibold px-3 py-1 rounded-full border ${
+            isCompleted
+              ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800/60"
+              : "bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800/60"
+          }`}
+        >
+          {isCompleted
+            ? "Penuh • Siap Tukar"
+            : `Aktif • ${card.stamps_count}/${card.stamps_required} Stempel`}
+        </span>
+      </div>
+
       {/* Kartu Loyalitas */}
       <LoyaltyCard
         tenantName={card.tenant_name}
@@ -85,31 +103,32 @@ export function CustomerCardView({ card }: CustomerCardViewProps) {
         stampHasBorder={card.stamp_has_border}
       />
 
-      {/* Action buttons for Customer */}
-      <div className="w-full grid grid-cols-2 gap-2.5">
-        <button
-          type="button"
-          onClick={handleOpenQR}
-          className="flex items-center justify-center gap-2 min-h-11 py-2.5 px-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-medium transition"
-        >
-          <QrCode className="w-4 h-4 text-blue-900 dark:text-blue-400" />
-          <span>Tampilkan QR</span>
-        </button>
+      {/* Primary Action CTA */}
+      <button
+        type="button"
+        onClick={handleOpenQR}
+        className="w-full flex items-center justify-center gap-2.5 h-12 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white text-sm font-bold shadow-lg shadow-blue-600/25 transition-all"
+      >
+        <QrCode className="w-4 h-4" />
+        <span>Tunjukkan QR ke Kasir</span>
+      </button>
 
+      {/* Secondary Actions */}
+      <div className="w-full grid grid-cols-1 gap-2.5">
         <button
           type="button"
           onClick={handleCopyLink}
-          className="flex items-center justify-center gap-2 min-h-11 py-2.5 px-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-medium transition"
+          className="flex items-center justify-center gap-2 min-h-11 py-2.5 px-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-semibold transition"
         >
           {copied ? (
             <>
               <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span className="text-emerald-700 dark:text-emerald-300 font-semibold">Tersalin!</span>
+              <span className="text-emerald-700 dark:text-emerald-300 font-semibold">Tautan Tersalin!</span>
             </>
           ) : (
             <>
-              <Copy className="w-4 h-4 text-blue-900 dark:text-blue-400" />
-              <span>Salin Tautan</span>
+              <Copy className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span>Salin Tautan Kartu</span>
             </>
           )}
         </button>
@@ -125,25 +144,47 @@ export function CustomerCardView({ card }: CustomerCardViewProps) {
 
       {/* Info Hadiah yang Sudah Pernah Ditukar */}
       {redeemedCount > 0 && (
-        <div className="w-full rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 p-3.5 flex items-center justify-center gap-2 text-xs text-slate-800 dark:text-slate-200">
-          <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-          <span>Hadiah yang pernah didapat: <strong>{redeemedCount} kali</strong></span>
+        <div className="w-full rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/60 px-4 py-3 flex items-center justify-between text-xs text-emerald-800 dark:text-emerald-200">
+          <div className="flex items-center gap-2 font-semibold">
+            <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span>Hadiah yang pernah didapat</span>
+          </div>
+          <strong className="text-emerald-700 dark:text-emerald-300 font-bold">{redeemedCount} kali</strong>
         </div>
       )}
 
-      {/* Petunjuk Penggunaan untuk Pelanggan */}
-      <div className="w-full rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 space-y-2 text-xs text-slate-600 dark:text-slate-400">
-        <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100 font-semibold">
-          <Info className="w-4 h-4 text-blue-900 dark:text-blue-400 shrink-0" />
+      {/* Petunjuk Penggunaan 3 Langkah */}
+      <div className="w-full rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 space-y-3 text-xs text-slate-600 dark:text-slate-400">
+        <div className="flex items-center gap-2 text-slate-900 dark:text-slate-100 font-bold text-[13px]">
+          <Info className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
           <span>Cara Menggunakan Kartu Ini</span>
         </div>
-        <p className="leading-relaxed">
-          {isCompleted
-            ? `Tunjukkan halaman ini kepada kasir ${card.tenant_name} untuk menukarkan hadiah: ${card.reward_text}.`
-            : `Tunjukkan halaman ini atau kode QR kepada kasir ${card.tenant_name} setiap kali berbelanja untuk mengumpulkan stempel.`}
-        </p>
-        <div className="flex items-center gap-1.5 pt-1 text-[11px] text-slate-500 dark:text-slate-400">
-          <Smartphone className="w-3.5 h-3.5" />
+        <ol className="space-y-2.5">
+          <li className="flex items-center gap-2.5">
+            <span className="w-6 h-6 rounded-full bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 font-bold text-[11px] flex items-center justify-center shrink-0">
+              1
+            </span>
+            <span>Belanja di <strong className="text-slate-800 dark:text-slate-200">{card.tenant_name}</strong> seperti biasa.</span>
+          </li>
+          <li className="flex items-center gap-2.5">
+            <span className="w-6 h-6 rounded-full bg-blue-50 dark:bg-blue-950/70 text-blue-600 dark:text-blue-400 font-bold text-[11px] flex items-center justify-center shrink-0">
+              2
+            </span>
+            <span>Tekan <strong>&ldquo;Tunjukkan QR ke Kasir&rdquo;</strong> untuk tambah stempel.</span>
+          </li>
+          <li className="flex items-center gap-2.5">
+            <span className="w-6 h-6 rounded-full bg-emerald-50 dark:bg-emerald-950/70 text-emerald-600 dark:text-emerald-400 font-bold text-[11px] flex items-center justify-center shrink-0">
+              3
+            </span>
+            <span>
+              {isCompleted
+                ? `Stempel penuh! Tukar hadiah: ${card.reward_text}.`
+                : `Kumpulkan ${card.stamps_required} stempel untuk klaim ${card.reward_text}.`}
+            </span>
+          </li>
+        </ol>
+        <div className="flex items-center gap-1.5 pt-1 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500 dark:text-slate-400">
+          <Smartphone className="w-3.5 h-3.5 shrink-0" />
           <span>Simpan bookmark link ini di peramban ponsel Anda agar mudah diakses kembali.</span>
         </div>
       </div>
